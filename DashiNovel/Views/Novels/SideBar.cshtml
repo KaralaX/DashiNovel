@@ -1,0 +1,11 @@
+﻿@model DashiNovel.Models.Novel;
+<ul>
+    <li><a asp-controller="Novels" asp-action="EditNovel" asp-route-novelId="@Model.NovelId">@Model.Title</a></li>
+    <ul>
+        @foreach (Chapter c in Model.Chapters)
+        {
+            <li><a asp-controller="Novels" asp-action="EditChapter" asp-route-novelId="@Model.NovelId" asp-route-chapterId="@c.ChapterId">Chapter @c.ChapterNumber: @c.Title</a></li>
+        }
+        <li><a asp-controller="Novels" asp-action="Add" asp-route-novelId="@Model.NovelId" asp-route-count="@Model.Chapters.Count">New Chapter</a></li>
+    </ul>
+</ul>

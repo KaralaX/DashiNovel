@@ -1,0 +1,53 @@
+﻿
+@{
+    ViewData["Title"] = "Register";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+@addTagHelper *,Microsoft.AspNetCore.Mvc.TagHelpers;
+@using DashiNovel.Models;
+@model User;
+@section Styles {
+    @Html.Raw($"<link rel='stylesheet' href='/css/authen.css' />")
+}
+<div class="d-flex justify-content-center authenticate">
+    <div class="authenticate">
+        <form asp-controller="Home" asp-action="Register" method="post">
+            <h2>Create a New Account</h2>
+            <div class="mt-3">
+                <label for="email" class="form-label">Username</label>
+                <div>
+                    <input type="text" class="form-control" asp-for="UserName" id="username" placeholder="Username" required />
+                </div>
+            </div>
+            <div class="mt-3">
+                <label for="email" class="form-label">Email Address</label>
+                <div>
+                    <input type="text" class="form-control" asp-for="Email" id="email" placeholder="Email" required />
+                </div>
+                @ViewBag.emailErr
+            </div>
+            <div class="mt-3">
+                <label for="pass" class="form-label">Password </label>
+                <div>
+                    <input type="password" class="form-control" asp-for="Password" id="pass" placeholder="Password"  required />
+                </div>
+                @ViewBag.passErr
+            </div>
+            <div class="mt-3">
+                <label for="confpass" class="form-label">Confirm Password</label>
+                <div>
+                    <input type="password" class="form-control" name="confpass" id="confpass" placeholder="Confirm Password" required />
+                </div>
+                @ViewBag.confPassErr
+            </div>
+            <div class="d-grid mt-3 "> 
+                <button class="btn btn-primary" type="submit">Sign Up</button>
+            </div>
+        </form>
+    </div>
+</div>
+
+
+
+
+

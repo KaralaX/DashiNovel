@@ -1,0 +1,49 @@
+/* _content/DashiNovel/Views/Shared/_Layout.cshtml.rz.scp.css */
+/* Please see documentation at https://docs.microsoft.com/aspnet/core/client-side/bundling-and-minification
+for details on configuring this project to bundle and minify static web assets. */
+
+a.navbar-brand[b-fhvyd4rsnl] {
+  white-space: normal;
+  text-align: center;
+  word-break: break-all;
+}
+
+a[b-fhvyd4rsnl] {
+  color: #0077cc;
+}
+
+.btn-primary[b-fhvyd4rsnl] {
+  color: #fff;
+  background-color: #1b6ec2;
+  border-color: #1861ac;
+}
+
+.nav-pills .nav-link.active[b-fhvyd4rsnl], .nav-pills .show > .nav-link[b-fhvyd4rsnl] {
+  color: #fff;
+  background-color: #1b6ec2;
+  border-color: #1861ac;
+}
+
+.border-top[b-fhvyd4rsnl] {
+  border-top: 1px solid #e5e5e5;
+}
+.border-bottom[b-fhvyd4rsnl] {
+  border-bottom: 1px solid #e5e5e5;
+}
+
+.box-shadow[b-fhvyd4rsnl] {
+  box-shadow: 0 .25rem .75rem rgba(0, 0, 0, .05);
+}
+
+button.accept-policy[b-fhvyd4rsnl] {
+  font-size: 1rem;
+  line-height: inherit;
+}
+
+.footer[b-fhvyd4rsnl] {
+  position: absolute;
+  bottom: 0;
+  width: 100%;
+  white-space: nowrap;
+  line-height: 60px;
+}

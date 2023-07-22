@@ -1,0 +1,270 @@
+﻿@model DashiNovel.Models.Novel;
+@{
+    ViewData["Title"] = Model.Title;
+    Novel n = Model;
+    Chapter reading = ViewBag.reading;
+    HttpContextAccessor accessor = new HttpContextAccessor();
+    int? userId = accessor.HttpContext.Session.GetInt32("UserId") as int?;
+    string? userName = accessor.HttpContext.Session.GetString("UserName");
+    int count = 0;
+    foreach (Review r in n.Reviews)
+    {
+        if (r.Rate == true)
+            count++;
+    }
+    int rate = 0;
+    if (n.Reviews.Count != 0)
+        rate = (int)(((double)count / n.Reviews.Count) * 100);
+}
+<script>
+    function View(obj) {
+        var ab = document.getElementById("ab");
+        var about = document.getElementById("about");
+        var ch = document.getElementById("ch");
+        var chapter = document.getElementById("chapter");
+        ab.className = "";
+        about.className = "hidden";
+        ch.className = "";
+        chapter.className = "hidden";
+        obj.className = "active";
+        if (obj === ab)
+            about.className = "visible";
+        if (obj === ch)
+            chapter.className = "visible";
+    }
+</script>
+<style>
+    .detail{
+        width: 70%;
+        margin: 0 auto;
+    }
+    .inf span{
+        color:white;
+        background-color: rgb(18 122 254);
+        padding: 2px 1rem;
+        border-radius: 4px;
+    }
+
+    h1{
+        font-size: 32px;
+        font-weight: 700;
+        line-height: 115%;
+        letter-spacing: -.02em;
+    }
+
+    pre {
+        white-space: pre-wrap;
+        font-family: var(--bs-body-font-family);
+        font-size: var(--bs-body-font-size);
+        font-weight: var(--bs-body-font-weight);
+        line-height: var(--bs-body-line-height);
+    }
+
+    a{
+        text-decoration: none;
+    }
+
+    .active{
+        border-bottom: 5px solid rgb(18 122 254);
+    }
+    .d-flex div{
+        padding: 13px 8px;
+        cursor: pointer;
+        margin: 0px 20px;
+    }
+
+    .visible{
+        display: block;        
+    }
+    .hidden{
+        display: none;
+    }
+    .genres{
+        color: white;
+        background-color: rgb(18 122 254);
+        padding: 2px 1rem;
+        margin-right: 1rem;
+        margin-bottom: 1rem;
+        border-radius: 4px;
+    }
+    #chapter{
+        background-color: rgba(18, 122, 254, 0.8);
+        padding: 2rem 1rem;
+        border-radius: 20px;
+    }
+    #chapter a{
+        color: white;
+    }    
+    .chapter div:last-child{
+        border-bottom: 1px solid lightgrey;
+    }
+
+    .review div button{
+        float: right;
+    }
+
+    .clear{
+        clear: both;
+    }
+    .form-check-inline {
+        margin: 2rem;
+    }
+
+    .reviews{
+        background-color: #CCCCCC;
+        padding: 1rem;
+        border-radius: 5px;
+    }
+    .d-grid{
+        background-color: rgb(18 122 254);
+        border-radius: 5px;
+        text-align: center;
+        padding: 5px;
+    }
+</style>
+<div class="detail mt-5 mb-5">
+    <div class="row">
+        <div class="col-4">
+            <img class="img-fluid" src="data:image/png;base64,@Convert.ToBase64String(n.Image)" alt="Image" />
+        </div>
+        <div class="col-8 inf">
+            @if(n.State == false)
+            {
+                <span>On-going</span>
+            }
+            else
+            {
+                <span>Completed</span>
+            }
+            <h1>@n.Title</h1>
+            <i class="fa-solid fa-thumbs-up" style="color: limegreen; font-size: 1rem;"></i> @rate% @n.Reviews.Count Reviews
+            <p><b>Author:</b> @n.Author</p>
+            <p><b>Publish Date:</b> @n.PublishDate.ToShortDateString()</p>
+            <pre>@n.Description</pre>
+            <div class="d-grid">
+                    @if (reading != null)
+                    {
+                        <a asp-controller="Novels" asp-action="Read" asp-route-chapterId="@reading.ChapterId" asp-route-novelId="@n.NovelId">
+                        <div>
+                            <b style="color: white;">CONTINUE READING</b>
+                        </div>
+                        
+                        <small style="color: white;">Chapter @reading.ChapterNumber. @reading.Title</small>
+                        </a>
+                    }
+                    else if(n.Chapters.Count == 0)
+                    {
+                        <b style="color: white;">
+                            NO CHAPTER AVAILABLE
+                        </b>
+                    }
+                    else
+                    {
+                    <a asp-controller="Novels" asp-action="Read" asp-route-chapterId="@n.Chapters.First().ChapterId" asp-route-novelId="@n.NovelId">
+                        <b style="color: white;">START READING</b>
+                    </a>
+                    }
+            </div>
+        </div>
+    </div>
+
+    <div class="d-flex justify-content-start mt-3 mb-5">
+        <div id="ab" onclick="View(this)" class="active">
+            <h4>About</h4>
+        </div>
+        <div id="ch" onclick="View(this)">
+            <h4>Chapters</h4>
+        </div>
+    </div>
+
+    <div class="hidden" id="chapter">
+        <div class="row">
+            @foreach (Chapter c in n.Chapters)
+            {
+                <div class="col-6 mt-3 chapter">
+                    <a asp-controller="Novels" asp-action="Read" asp-route-chapterId="@c.ChapterId" asp-route-novelId="@n.NovelId">
+                        <div>
+                            <span>Chapter @c.ChapterNumber. @c.Title</span>
+                        </div>
+                        <div>
+                            <span>@c.ReleaseDate.ToShortDateString()</span>
+                        </div>
+                    </a>
+                </div>
+            }
+        </div>
+    </div>
+
+    <div class="visible" id="about">
+        <div class="row">
+            <div>
+                <p><b>Chapters</b></p>
+                <p>@n.Chapters.Count Chapters</p>
+            </div>
+            <div class="d-flex flex-wrap">
+                @foreach(Genre g in n.Genres)
+                {
+                    <span class="genres">@g.Name</span>
+                }
+            </div>
+        </div>
+        <div class="review">
+            @if (userId!=null && ViewBag.canReview == null)
+            {
+                <p><b>Reviews</b></p>
+                <form asp-controller="Novels" asp-action="Review" asp-route-novelId="@n.NovelId">
+                    <p class="text-center">Write a review</p>
+                    <h5 class="text-center">Enjoy @n.Title ?</h5>
+                    <div class="text-center">
+                        <div class="form-check form-check-inline">
+                            <input class="form-check-input" type="radio" name="rate" id="inlineRadio1" value="true" style="font-size: 2rem; vertical-align: center;" required />
+                            <label class="form-check-label" for="inlineRadio1"><i class="fa-solid fa-thumbs-up" style="color: limegreen; font-size: 2rem; padding-top: 8px"></i></label>
+                        </div>
+                        <div class="form-check form-check-inline">
+                            <input class="form-check-input" type="radio" name="rate" id="inlineRadio2" value="false" style="font-size: 2rem; vertical-align: center;" required />
+                            <label class="form-check-label" for="inlineRadio2"><i class="fa-solid fa-thumbs-down" style="color: red; font-size: 2rem; padding-top: 8px"></i></label>
+                        </div>
+                    </div>
+                    <div>
+                        <textarea class="form-control" placeholder="Add a Review" name="review" required id="review"></textarea>
+                    </div>
+                    <div class="mt-3">
+                        <button class="btn btn-primary" type="submit">Submit</button>
+                    </div>
+                </form>
+            }
+            
+        </div>
+        
+        <div class="mt-10 clear">
+            <p><b>@n.Reviews.Count Reviews</b></p>
+            @foreach (Review r in n.Reviews)
+            {
+                <div class="mt-3 reviews">
+
+                    <span><b>@r.User.UserName</b></span>
+                    <p>@r.Date</p>
+                    @if (@r.Rate == true)
+                    {
+                        <div>
+                            <i class="fa-solid fa-thumbs-up" style="color: limegreen; font-size: 1rem;"></i> <span style="color: limegreen;">Recommended</span>
+                        </div>
+                    }
+                    else
+                    {
+                        <div>
+                            <i class="fa-solid fa-thumbs-down" style="color: red; font-size: 1rem;"></i> <span style="color: red;">Not Recommended</span>
+                        </div>
+                    }
+                    <div>
+                        @r.Review1
+                    </div>
+                </div>
+            }
+        </div>
+
+    </div>
+</div>
+
+
+

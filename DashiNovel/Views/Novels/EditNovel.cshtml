@@ -1,0 +1,146 @@
+﻿@{
+    ViewData["Title"] = "Edit";
+    Novel n = ViewBag.novel;
+    List<int> novelGenres = ViewBag.novelGenres;
+}
+<style>
+    ul{
+        list-style: none;
+    }
+
+    a {
+        text-decoration: none;
+    }
+
+    .dltbtn{
+        display: inline-block;
+        font-weight: 400;
+        line-height: 1.5;
+        color: #212529;
+        text-align: center;
+        text-decoration: none;
+        vertical-align: middle;
+        cursor: pointer;
+        -webkit-user-select: none;
+        -moz-user-select: none;
+        user-select: none;
+        background-color: transparent;
+        border: 1px solid transparent;
+        padding: 0.375rem 0.75rem;
+        font-size: 1rem;
+        border-radius: 0.25rem;
+        transition: color .15s ease-in-out,background-color .15s ease-in-out,border-color .15s ease-in-out,box-shadow .15s ease-in-out;
+        color: #fff;
+        background-color: #dc3545;
+        border-color: #dc3545;
+    }
+</style>
+<div class="row">
+    <div class="col-4">
+        <h2>Novel Index</h2>
+        @Html.Partial("SideBar", n)
+    </div>
+    <div class="col-8">
+        <h2>Novel Editor</h2>
+        <form asp-controller="Novels" asp-action="EditNovel" asp-route-novelId="@n.NovelId"  method="post" enctype="multipart/form-data">
+            <div class="row g-2">
+                <div class="col-md">
+                    <div class="form-floating mt-3">
+                        <input type="text" class="form-control" name="title" id="title" placeholder="Novel Title" required value="@n.Title"/>
+                        <label for="title">Title</label>
+                    </div>
+                </div>
+                <div class="col-md">
+                    <div class="form-floating mt-3">
+                        <input type="text" class="form-control" name="author" id="author" placeholder="Author" required value="@n.Author" />
+                        <label for="author">Author</label>
+                    </div>
+                </div>
+            </div>
+
+            <div class="row g-2">
+                <div class="col-md">
+                    <div class="form-floating mt-3">
+                        <select class="form-select" name="type" id="type">
+                            @if(n.Type == false)
+                            {
+                                <option value="false" selected>Translation Novel</option>
+                                <option value="true">Self-written Novel</option>
+                            }
+                            else
+                            {
+                                <option value="false">Translation Novel</option>
+                                <option value="true" selected>Self-written Novel</option>
+                            }
+                        </select>
+                        <label for="type">Novel Type</label>
+                    </div>
+                </div>
+                <div class="col-md">
+                    <div class="form-floating mt-3">
+                        <select class="form-select" name="status" id="status">
+                            @if(n.State == false)
+                            {
+                                <option value="false" selected>On-going</option>
+                                <option value="true">Completed</option>
+                            }
+                            else
+                            {
+                                <option value="false">On-going</option>
+                                <option value="true" selected>Completed</option>
+                            }
+                        </select>
+                        <label for="status">Status</label>
+                    </div>
+                </div>
+            </div>
+
+            <div class="row g-2 mt-3">
+                <div class="col-sm-12 col-md-6">
+                    <img class="img-fluid" src="data:image/png;base64,@Convert.ToBase64String(n.Image)" alt="Image" />
+                    <div class="input-group mt-3">
+                        <input type="file" class="form-control" name="image" id="img-file">
+                        <label class="input-group-text" for="img-file">Image Upload</label>
+                    </div>
+                </div>
+                <div class="col-sm-12 col-md-6">
+                    <div>
+                        <label class="form-label" for="sypnosis">Novel Sypnosis</label>
+                        <textarea class="form-control" placeholder="Novel Sypnosis" name="sypnosis" required id="sypnosis" style="height: 320px;">@n.Description</textarea>
+                    </div>
+                </div>
+            </div>
+
+            <div class="mt-3">
+                <label>Genre</label>
+                <div class="row mt-3">
+                    @foreach (Genre g in Model)
+                    {
+                        <div class="col-sm-6 col-lg-4 col-xl-3">
+                            @if (novelGenres.Contains(g.GenreId))
+                            {
+                                <input class="form-check-input" type="checkbox" name="genres" value="@g.GenreId" id="@g.GenreId" checked/>
+                                <label class="form-check-label" for="@g.GenreId">@g.Name</label>
+                            }
+                            else
+                            {
+                                <input class="form-check-input" type="checkbox" name="genres" value="@g.GenreId" id="@g.GenreId" />
+                                <label class="form-check-label" for="@g.GenreId">@g.Name</label>
+                            }
+                        </div>
+                    }
+                </div>
+            </div>
+            <div class="mt-3 d-flex justify-content-between">
+                <div>
+                    <button class="btn btn-primary" type="submit">Update</button>
+                    <button class="btn btn-info" type="reset">Reset</button>
+                </div>
+                <a asp-action="Delete" asp-controller="Novels" asp-route-novelId="@n.NovelId" class="dltbtn">Delete</a>
+            </div>
+        </form>
+    </div>
+</div>
+
+
+

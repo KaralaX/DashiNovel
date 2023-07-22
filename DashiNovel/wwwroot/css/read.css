@@ -1,0 +1,89 @@
+﻿pre {
+white-space: pre-wrap;
+font-family: var(--bs-body-font-family);
+font-size: var(--bs-body-font-size);
+font-weight: var(--bs-body-font-weight);
+line-height: var(--bs-body-line-height);
+}
+
+.content {
+width: 70%;
+margin: 0 auto;
+}
+
+.index {
+display: none;
+background-color: #CCCCCC;
+height: 100vh;
+overflow-y: auto;
+position: fixed;
+top: 0px;
+left: 0px;
+width: 350px;
+z-index: 999;
+transition: 2s;
+}
+
+.index h4 {
+margin: 1rem;
+}
+
+.index div {
+padding-left: 1rem;
+border-bottom: 1px solid white;
+}
+
+.index div:hover {
+background-color: #ADD8E6;
+}
+
+.index a {
+text-decoration: none;
+color: black;
+}
+
+.navigation {
+position: fixed;
+top: 50%;
+right: 1%;
+border: 1px solid #ccc;
+border-radius: 10px;
+}
+
+.navigation a {
+text-align: center;
+border-bottom: 1px solid #ccc;
+display: block;
+font-size: 20px;
+font-weight: 400;
+padding: 16px 20px;
+}
+
+.navigation a:last-of-type {
+border-bottom: none;
+}
+
+.comment {
+padding-top: 2rem;
+padding-bottom: 2rem;
+border-top: 1px solid black;
+}
+
+button {
+float: right;
+margin-left: 10px;
+}
+
+.clear {
+clear: both;
+}
+
+.com span {
+font-weight: 700;
+}
+
+.com div {
+    background-color: #CCCCCC;
+    border-radius: 5px;
+    padding: 1rem;
+}

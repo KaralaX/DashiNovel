@@ -1,0 +1,54 @@
+﻿@{
+    ViewData["Title"] = "Search";
+}
+<style>
+    a{
+        text-decoration: none;
+        color: black;
+    }
+
+    pre {
+        white-space: pre-wrap;
+        font-family: var(--bs-body-font-family);
+        font-size: var(--bs-body-font-size);
+        font-weight: var(--bs-body-font-weight);
+        line-height: var(--bs-body-line-height);
+        overflow: hidden;
+        text-overflow: ellipsis;
+        max-height: 100px;
+    }
+
+    .genres {
+        color: white;
+        background-color: rgb(18 122 254);
+        padding: 2px 1rem;
+        margin-right: 1rem;
+        margin-bottom: 10px;
+        border-radius: 4px;
+    }
+</style>
+
+<div class="row">
+    @foreach (Novel n in Model)
+    {
+        <div class="col-6 mb-3">
+        <a asp-controller="Novels" asp-action="Details" asp-route-novelId="@n.NovelId">
+            <div class="row"> 
+                <div class="col-3">
+                    <img class="img-fluid" src="data:image/png;base64,@Convert.ToBase64String(n.Image)" alt="Image" />
+                </div>
+                <div class="col-9">
+                    <b>@n.Title</b>
+                    <pre>@n.Description</pre>
+                    <div class="d-flex flex-wrap">
+                        @foreach (Genre g in n.Genres)
+                        {
+                            <span class="genres">@g.Name</span>
+                        }
+                    </div>
+                </div>
+            </div>
+        </a>
+        </div>
+    }
+</div>

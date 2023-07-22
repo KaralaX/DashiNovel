@@ -1,0 +1,85 @@
+﻿@model DashiNovel.Models.Chapter;
+@{
+    ViewData["Title"] = "Read";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    HttpContextAccessor accessor = new HttpContextAccessor();
+    int? userId = accessor.HttpContext.Session.GetInt32("UserId") as int?;
+    string? userName = accessor.HttpContext.Session.GetString("UserName");
+    Chapter c = Model;
+}
+@section Styles {
+    @Html.Raw($"<link rel='stylesheet' href='/css/read.css' />")
+}
+@section Js{
+    <script src="~/js/read.js"></script>
+}
+<div class="index" id="targetElement">
+    <h4>Chapters</h4>
+    @foreach (Chapter cs in ViewBag.chapters)
+    {
+        <a asp-controller="Novels" asp-action="Read" asp-route-chapterId="@cs.ChapterId" asp-route-novelId="@c.NovelId">
+        <div>
+            Chapter @cs.ChapterNumber @cs.Title
+            <p>@c.ReleaseDate.ToShortDateString()</p>
+        </div>
+        </a>
+    }
+</div>
+
+<div class="navigation">
+    @if (ViewBag.prev != null)
+    {
+        <a asp-controller="Novels" asp-action="Read" asp-route-chapterId="@ViewBag.prev" asp-route-novelId="@c.NovelId"><i class="fa-solid fa-backward"></i></a>
+    }
+    else
+    {
+        <a><i class="fa-solid fa-backward"></i></a>
+    }
+    <a asp-controller="Novels" asp-action="Details" asp-route-novelId="@c.NovelId"><i class="fa-solid fa-house-chimney"></i></a>
+    <a id="toggleButton"><i class="fa-solid fa-info"></i></a>
+    @if (ViewBag.next != null)
+    {
+        <a asp-controller="Novels" asp-action="Read" asp-route-chapterId="@ViewBag.next" asp-route-novelId="@c.NovelId"><i class="fa-solid fa-forward"></i></a>
+    }
+    else
+    {
+        <a><i class="fa-solid fa-forward"></i></a>
+    }
+</div>
+
+<div class="content">
+    <div>
+        <h4 class="text-center">Chapter @c.ChapterNumber @c.Title</h4>
+        <p class="text-center">Upload on: @c.ReleaseDate</p>
+        <pre>@c.Content</pre>
+    </div>
+
+    <div class="comment">
+        <h4>@c.Comments.Count Comments</h4>
+        @if(userId != null)
+        {
+            <div>
+                <form asp-controller="Novels" asp-action="Comment" asp-route-chapterId="@c.ChapterId" asp-route-novelId="@c.NovelId">
+                    <textarea class="form-control" placeholder="Leave a comment here" name="comment" id="floatingTextarea"></textarea>
+                    <div class="mt-3">
+                        <button class="btn btn-primary" type="submit">Submit</button>
+                    </div>
+                </form>
+            </div>
+        }
+        <div class="clear">
+            @foreach (Comment com in c.Comments)
+            {
+                <div class="com mt-3">
+                    <span>@com.User.UserName</span>
+                    <p>@com.Date</p>
+                    <div>
+                        @com.Comment1
+                    </div>
+                </div>
+            }
+        </div>
+    </div>
+
+</div>
+

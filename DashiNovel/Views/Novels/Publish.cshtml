@@ -1,0 +1,75 @@
+﻿@{
+    ViewData["Title"] = "PublishNovel";
+}
+@addTagHelper *,Microsoft.AspNetCore.Mvc.TagHelpers;
+@using DashiNovel.Models;
+
+<div class="d-flex justify-content-center">
+    <div style="width: 80%">
+        <h2>Publish Novel</h2>
+        <form asp-controller="Novels" asp-action="Publish" method="post" enctype="multipart/form-data">
+            <div class="row g-2">
+                <div class="col-md">
+                    <div class="form-floating mt-3">
+                        <input type="text" class="form-control" name="title" id="title" placeholder="Novel Title" required />
+                        <label for="title">Title</label>
+                    </div>
+                </div>
+                <div class="col-md">
+                    <div class="form-floating mt-3">
+                        <input type="text" class="form-control" name="author" id="author" placeholder="Author" required />
+                        <label for="author">Author</label>
+                    </div>
+                </div>
+            </div>
+
+            <div class="input-group mt-3">
+                <input type="file" class="form-control" name="image" id="img-file" required>
+                <label class="input-group-text" for="img-file">Image Upload</label>
+            </div>
+
+            <div class="row g-2">
+                <div class="col-md">
+                    <div class="form-floating mt-3">
+                        <select class="form-select" name="type" id="type">
+                            <option value="false">Translation Novel</option>
+                            <option value="true">Self-written Novel</option>
+                        </select>
+                        <label for="type">Novel Type</label>
+                    </div>
+                </div>
+                <div class="col-md">
+                    <div class="form-floating mt-3">
+                        <select class="form-select" name="status" id="status">
+                            <option value="false">On-going</option>
+                            <option value="true">Completed</option>
+                        </select>
+                        <label for="status">Status</label>
+                    </div>
+                </div>
+            </div>
+
+            <div class="form-floating mt-3">
+                <textarea class="form-control" placeholder="Novel Sypnosis" name="sypnosis" required id="sypnosis" style="height: 100px;"></textarea>
+                <label for="sypnosis">Novel Sypnosis</label>
+            </div>
+            <div class="mt-3">
+                <label>Genre</label>
+                <div class="row mt-3">
+                    @foreach (Genre g in Model)
+                    {
+                        <div class="col-sm-6 col-lg-4 col-xl-3">
+                            <input class="form-check-input" type="checkbox" name="genres" value="@g.GenreId" id="@g.GenreId" />
+                            <label class="form-check-label" for="@g.GenreId">@g.Name</label>
+                        </div>
+                    }
+                </div>
+            </div>
+
+            <div class="mt-3">
+                <button class="btn btn-primary" type="submit">Publish</button>
+                <button class="btn btn-danger" type="reset">Clear</button>
+            </div>
+        </form>
+    </div>
+</div>

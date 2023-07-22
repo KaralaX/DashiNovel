@@ -1,0 +1,49 @@
+﻿
+@{
+    ViewData["Title"] = "EditChapter";
+    Novel n = ViewBag.novel;
+    Chapter c = ViewBag.chapter;
+}
+<style>
+    ul {
+        list-style: none;
+    }
+    a{
+        text-decoration: none;
+    }
+</style>
+<div class="row">
+    <div class="col-4">
+        <h2>Novel Index</h2>
+        @Html.Partial("SideBar", n)
+    </div>
+    <div class="col-8">
+        <h2>Chapter Editor</h2>
+        <form asp-asp-controller="Novels" asp-action="EditChapter" asp-route-novelId="@n.NovelId" asp-route-chapterId="@c.ChapterId" method="post">
+            <div class="row g-2">
+                <div class="col-md">
+                    <div class="form-floating mt-3">
+                        <input type="number" class="form-control" name="number" id="chapternumber" required value="@c.ChapterNumber" />
+                        <label for="chapternumber">Chapter Number</label>
+                    </div>
+                </div>
+                <div class="col-md">
+                    <div class="form-floating mt-3">
+                        <input type="text" class="form-control" name="title" id="title" placeholder="Novel Title" required value="@c.Title" />
+                        <label for="title">Title</label>
+                    </div>
+                </div>
+            </div>
+            <div class="mt-3">
+                <label class="form-label" for="sypnosis">Chapter Content</label>
+                <textarea class="form-control" placeholder="Chapter Content" name="content" required id="sypnosis" style="height: 450px;">@c.Content</textarea>
+            </div>
+            <div class="mt-3">
+                <button class="btn btn-primary" type="submit">Save</button>
+                <button class="btn btn-danger" type="reset">Reset</button>
+            </div>
+        </form>
+    </div>
+</div>
+
+

@@ -1,0 +1,35 @@
+﻿
+@{
+    ViewData["Title"] = "Bookmarks";
+}
+<h1>Bookmarks</h1>
+@if (ViewBag.readings == null)
+{
+    <p>You don't have a bookmark</p>
+}
+<div class="row">
+        @foreach (Reading r in ViewBag.readings)
+        {
+            <div class="col-6">
+                <div class="row">
+                    <div class="col-3">
+                        <img class="img-fluid" src="data:image/png;base64,@Convert.ToBase64String(@r.Novel.Image)" alt="Image" />
+                    </div>
+                    <div class="col-7">
+                        <h4 class="mb-5">@r.Novel.Title</h4>
+                        <p>@r.Novel.Author</p>
+                        <p>You have read @r.ChapterNumber/@r.Novel.Chapters.Count chapters</p>
+                        <div class="progress" role="progressbar" aria-label="Basic example" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100">
+                            <div class="progress-bar" style="width: @Html.Raw(@r.ChapterNumber*100/@r.Novel.Chapters.Count)%"></div>
+                        </div>
+                        @{
+                            int cId = r.Novel.Chapters.FirstOrDefault(c => c.ChapterNumber == r.ChapterNumber && c.NovelId == r.NovelId).ChapterId;
+                        }
+                        <div class="mt-2">
+                            <a asp-controller="Novels" asp-action="Read" asp-route-novelId="@r.Novel.NovelId" asp-route-chapterId="@cId" style="text-decoration: none">Continue Reading</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        }
+</div>
